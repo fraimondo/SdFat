@@ -96,7 +96,7 @@ void FatFile::dmpFile(print_t* pr, uint32_t pos, size_t n) {
   pr->write('\n');
 }
 //------------------------------------------------------------------------------
-bool FatFile::ls(print_t* pr, uint8_t flags, uint8_t indent) {
+void FatFile::ls(print_t* pr, uint8_t flags, uint8_t indent, char prefix) {
   FatFile file;
   if (!isDir() || getError()) {
     DBG_FAIL_MACRO;
@@ -105,7 +105,10 @@ bool FatFile::ls(print_t* pr, uint8_t flags, uint8_t indent) {
   rewind();
   while (file.openNext(this, O_RDONLY)) {
     if (!file.isHidden() || (flags & LS_A)) {
-    // indent for dir level
+      if (prefix != '\0') {
+        pr->write(prefix);
+      }
+      // indent for dir level
       for (uint8_t i = 0; i < indent; i++) {
         pr->write(' ');
       }
@@ -124,10 +127,11 @@ bool FatFile::ls(print_t* pr, uint8_t flags, uint8_t indent) {
       pr->write('\r');
       pr->write('\n');
       if ((flags & LS_R) && file.isDir()) {
-        if (!file.ls(pr, flags, indent + 2)) {
+        if (!file.ls(pr, flags, indent + 2, prefix)) {
           DBG_FAIL_MACRO;
           goto fail;
         }
+
       }
     }
     file.close();
