@@ -96,7 +96,7 @@ void FatFile::dmpFile(print_t* pr, uint32_t pos, size_t n) {
   pr->write('\n');
 }
 //------------------------------------------------------------------------------
-void FatFile::ls(print_t* pr, uint8_t flags, uint8_t indent, char prefix) {
+bool FatFile::ls(print_t* pr, uint8_t flags, uint8_t indent, char prefix) {
   FatFile file;
   if (!isDir() || getError()) {
     DBG_FAIL_MACRO;

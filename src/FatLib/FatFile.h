@@ -473,7 +473,7 @@ class FatFile {
    * \return true for success or false if an error occurred.
    */
 
-  void ls(print_t* pr, uint8_t flags = 0, uint8_t indent = 0, char prefix='\0');
+  bool ls(print_t* pr, uint8_t flags = 0, uint8_t indent = 0, char prefix='\0');
   /** Make a new directory.
    *
    * \param[in] dir An open FatFile instance for the directory that will
